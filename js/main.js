@@ -168,8 +168,12 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
      var number = Math.floor(Math.random() * dictionarySize);
      boardgameType.html('');
      currentCharacter = 0;
+
+     //currentWord = Object.keys(word)[number];
      currentWord = Object.keys(word)[number];
-     currentDesc = Object.values(word)[number];
+     words = Object.keys(word).map(number => word[number]);
+     currentDesc = words[number];
+
      prepareGameBoard();
   }
 
