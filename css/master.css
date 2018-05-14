@@ -171,7 +171,11 @@ body{
 .game-stats .stat:nth-child(3){
   background: url('../assets/images/word-count.png') no-repeat;
 }
-
+dialog{
+  position: fixed;
+  top: 50%;
+  transform: translate(0, -50%);
+}
 .site-dialog {
   overflow: hidden;
   width: 95%;
