@@ -205,7 +205,7 @@ body{
   padding: 20px 20px 0;
 }
 .site-dialog .dialog-content {
-  padding: 15px 20px 30px;
+  padding: 15px 45px 30px;
   text-align: center;
   color: #555;
 }
@@ -227,7 +227,16 @@ body{
   border-color: #0066c0;
   background-color: #0074d9;
 }
-
+.btn-orange{
+  background: orange;
+}
+.btn-red{
+  background: red;
+}
+.btn-block{
+  display: block;
+  margin: 15px auto;
+}
 .add-score-form input{
   padding: 9px;
   font-size: 18px;
@@ -261,8 +270,8 @@ dialog p.scoreboard-score{
 #scoreboard .score{
   overflow: hidden;
 }
-#scoreboard .score .score-user, #scoreboard .score .score-score{
-  width: 50%;
+#scoreboard .score .score-user, #scoreboard .score .score-score, #scoreboard .score .score-difficulty{
+  width: 33.3%;
   float: left;
   text-align: left;
 }

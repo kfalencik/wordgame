@@ -41,19 +41,71 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
 
   var gameOverStatus = false;
   var timerInterval = null;
-  var timer = 45;
   var score = 0;
   var wordCount = 0;
+
+
+  // Difficulty
+  var difficulty = 'easy';
+  var timer = 45;
+  var dPenalty = 0;
+  var dMultiplier = 0;
+  var dBonus = 0;
+  var dTimefreeze = 0;
+  var dStreak = 0;
+
 
   // Superpowers
   var superPowerFreeze = false;
   var superPowerDouble = false;
 
 
+  $('#dialog-start')[0].showModal();
+
+  $('.difficulty-btn').on('click', function(){
+    $('#dialog-start')[0].close();
+    difficulty = $(this).attr('difficulty');
+    chooseDifficulty(difficulty);
+    startGame();
+  })
+
+
+  function chooseDifficulty(d){
+    switch (d) {
+      case 'easy':
+        timer = 45;
+        dPenalty = 15;
+        dMultiplier = 2;
+        dBonus = 3;
+        dTimefreeze = 15;
+        dStreak = 5;
+        break;
+
+      case 'average':
+        timer = 30;
+        dPenalty = 20;
+        dMultiplier = 4;
+        dBonus = 2;
+        dTimefreeze = 10;
+        dStreak = 7;
+        break;
+
+      case 'insane':
+        timer = 15;
+        dPenalty = 30;
+        dMultiplier = 8;
+        dBonus = 1.5;
+        dTimefreeze = 5;
+        dStreak = 10;
+        break;
+
+    }
+  }
 
   function startGame(){
 
     // Get initial word and description
+    startTimer();
     getNextWord();
     initializeStats();
   }
@@ -62,18 +114,14 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   // On keypress
   $('body').on('keypress', function(eve){
 
-    if(gameStarted == false){
-      startGame();
-      startTimer();
-      gameStarted = true;
-    } else {
+
       character = eve.key;
       charCode = eve.keyCode;
 
       if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32 || charCode == 45){
         gameKeyPress(character);
       }
-    }
+
 
   });
 
@@ -123,11 +171,11 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
     // Check current word length
     wordLength = currentWord.length;
     currentWordLength = currentWord.length;
-    currentBonus = parseInt(wordLength/2);
+    currentBonus = parseInt(wordLength/dMultiplier);
 
     // Double points superpower
     if(superPowerDouble == true){
-      currentBonus = wordLength*2;
+      currentBonus = parseInt(wordLength*dBonus);
     }
 
     i = 0;
@@ -167,13 +215,13 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
 
   function badPress(){
     $('.text-input input[character="' + currentCharacter + '"]').val(currentWord.charAt(currentCharacter)).addClass('bad');
-    timer = timer - 15;
+    timer = timer - dPenalty;
     streak = 0;
     boardgameStars.html('');
     updateStats();
     removeSuperPowers();
     skyStatus();
-    message('bad', '-15s');
+    message('bad', '-' + dPenalty + 's');
     getNextWord();
   }
 
@@ -248,7 +296,7 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   }
 
   function addStreakStar(){
-    if (streak == 5){
+    if (streak == dStreak){
       streak = 0;
       boardgameStars.html('');
        explode();
@@ -266,7 +314,7 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
     superPowerFreeze = true;
     setTimeout(function(){
       removeSuperPowers();
-    },15000);
+    },dTimefreeze);
 
   }
 
@@ -274,7 +322,7 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
     superPowerDouble = true;
     setTimeout(function(){
       removeSuperPowers();
-    },15000);
+    },dTimefreeze);
   }
 
   function addSuperPower(){
@@ -314,6 +362,25 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   $('.scoreboard-button').on('click', function(){
     dialogGameOver.close();
     dialogScoreboard.showModal();
+
+    // Scoreboard
+    db.collection("scoreboard").orderBy("score", "desc").onSnapshot(function(querySnapshot) {
+      var scores = [];
+      var i = 0;
+      var n = 0;
+      querySnapshot.forEach(function(doc) {
+          scores.push(doc.data());
+      });
+      $('#scoreboard').html('');
+      while(i < scores.length){
+        entry = scores[i];
+        i++;
+        if(difficulty == entry.difficulty){
+          n++;
+          $('#scoreboard').append('<div class="score"><span class="score-user">' + n + '. ' + entry.user + '</span><span class="score-difficulty">' + entry.difficulty + '</span><span class="score-score">' + entry.score + '</span></div>')
+        }
+      }
+    });
   });
 
   function explode() {
@@ -345,22 +412,6 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
     return Math.floor(Math.random() * (max + 1)) + min;
   }
 
-
-  // Scoreboard
-  db.collection("scoreboard").orderBy("score", "desc").onSnapshot(function(querySnapshot) {
-    var scores = [];
-    var i = 0;
-    querySnapshot.forEach(function(doc) {
-        scores.push(doc.data());
-    });
-    $('#scoreboard').html('');
-    while(i < scores.length){
-      entry = scores[i];
-      i++;
-      $('#scoreboard').append('<div class="score"><span class="score-user">' + i + '. ' + entry.user + '</span><span class="score-score">' + entry.score + '</span></div>')
-    }
-  });
-
   $('.save-score').on('click', function(){
     addScore();
   })
@@ -375,7 +426,8 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
       $('.add-score-form').remove();
       db.collection("scoreboard").add({
         user: user,
-        score: score
+        score: score,
+        difficulty: difficulty
       });
     }
   }

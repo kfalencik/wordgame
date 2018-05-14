@@ -8,6 +8,19 @@
   </head>
   <body>
 
+    <dialog id="dialog-start" class="site-dialog">
+      <header class="dialog-header">
+        <h1>Word game</h1>
+      </header>
+      <div class="dialog-content">
+        <p>Objective of the game is to type in the word show in the top of the screen. Look out as the time is ticking and every misspeled word results in a time penalty.
+        <p>Please select your difficulty level</p>
+        <button difficulty="easy" class="difficulty-btn btn btn-block">Easy</button>
+        <button difficulty="average" class="difficulty-btn btn btn-block btn-orange">Hard</button>
+        <button difficulty="insane" class="difficulty-btn btn btn-block btn-red">Insane</button>
+      </div>
+    </dialog>
+
     <div id="gameboard">
       <div class="game-word"></div>
       <div class="game-stats"></div>
@@ -15,7 +28,7 @@
       <div class="game-effects"></div>
       <div class="game-stars"></div>
       <div class="game-typing"></div>
-      <div class="game-word-description"><span class="game-instruction"><img width="50" src="./assets/sword.png" /><br />Press any key to start</span></div>
+      <div class="game-word-description"></div>
     </div>
 
     <dialog id="dialog-game-over" class="site-dialog">
