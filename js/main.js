@@ -171,7 +171,9 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
 
      //currentWord = Object.keys(word)[number];
      currentWord = Object.keys(word)[number];
-     words = Object.keys(word).map(number => word[number]);
+     words = Object.keys(word).map(function(number){
+       return word[number];
+     });
      currentDesc = words[number];
 
      prepareGameBoard();
