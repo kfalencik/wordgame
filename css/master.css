@@ -175,7 +175,7 @@ body{
 .site-dialog {
   overflow: hidden;
   width: 95%;
-  max-width: 500px;
+  max-width: 640px;
   padding: 0;
   border-width: 0;
   border-radius: 5px;
@@ -183,7 +183,7 @@ body{
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.3);
   background: url('../assets/images/board.png') no-repeat;
   background-size: 100%;
-  height: 480px;
+  height: 610px;
 }
 .site-dialog::backdrop{
   background: rgba(255,255,255,0.5);
@@ -202,10 +202,10 @@ body{
   color: #fff;
 }
 .site-dialog .dialog-header {
-  padding: 12px 20px;
+  padding: 20px 20px 0;
 }
 .site-dialog .dialog-content {
-  padding: 30px 20px;
+  padding: 15px 20px 30px;
   text-align: center;
   color: #555;
 }
@@ -214,46 +214,23 @@ body{
   margin-top: 0;
   margin-bottom: 0;
 }
-.btn {
+.btn{
   padding: 10px 15px;
   cursor: pointer;
-  color: #555;
   border-width: 1px;
   border-style: solid;
   border-radius: 3px;
-  background-color: #f3f3f3;
-}
-.btn.disabled {
-  cursor: not-allowed;
-  color: #ddd;
-  border-color: #ddd;
-}
-.btn-group {
-  padding: 15px 20px;
-  text-align: right;
-}
-.btn-primary {
   color: #fff;
+  margin-bottom: 25px;
+  box-shadow: 0 0 10px rgba(255,255,255,0.2);
+  font-size: 18px;
   border-color: #0066c0;
   background-color: #0074d9;
 }
-.btn-primary:hover {
-  background-color: #0066c0;
-}
-.btn-danger {
-  color: #fff;
-  border-color: #ab3326;
-  background-color: #c0392b;
-}
-.btn-danger:hover {
-  background-color: #ab3326;
-}
-.btn-cancel {
-  color: #999;
-  border-color: #ddd;
-}
-.btn-cancel:hover {
-  background-color: #e6e6e6;
+
+.add-score-form input{
+  padding: 9px;
+  font-size: 18px;
 }
 
 dialog p.scoreboard-score{
@@ -269,6 +246,25 @@ dialog p.scoreboard-score{
     top: 15px;
     left: 15px;
   }
+}
+
+
+#scoreboard{
+  max-width: 450px;
+  margin: 0 auto 10px;
+  color: #fff;
+  background: rgba(0,0,0,0.5);
+  padding: 15px;
+  overflow: auto;
+  height: 240px;
+}
+#scoreboard .score{
+  overflow: hidden;
+}
+#scoreboard .score .score-user, #scoreboard .score .score-score{
+  width: 50%;
+  float: left;
+  text-align: left;
 }
 
 

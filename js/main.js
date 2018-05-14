@@ -1,6 +1,18 @@
 (function($) {
 
 
+// Initialize Firebase
+var config = {
+  apiKey: "AIzaSyDIXpe5mzvMwRazS0rIjdZ9qc-8oedzU9E",
+  authDomain: "wordgame-133e4.firebaseapp.com",
+  databaseURL: "https://wordgame-133e4.firebaseio.com",
+  projectId: "wordgame-133e4",
+  storageBucket: "wordgame-133e4.appspot.com",
+  messagingSenderId: "608816777045"
+};
+firebase.initializeApp(config);
+var db = firebase.firestore();
+
 // Get game words
 var word = {};
 $.getJSON("./assets/text/dictionary.json", function( data ) {
@@ -61,7 +73,7 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
       if ((charCode > 64 && charCode < 91) || (charCode > 96 && charCode < 123) || charCode == 8 || charCode == 32 || charCode == 45){
         gameKeyPress(character);
       }
-    }   
+    }
 
   });
 
@@ -201,7 +213,12 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
       gameOverStatus = true;
       boardgameMessages.html('');
       $('.scoreboard-score').text(score);
-      dialog.showModal();
+      if(score == 0){
+        $('.scoreboard-button').hide();
+      } else {
+        $('.scoreboard-button').show();
+      }
+      dialogGameOver.showModal();
     }
   }
 
@@ -288,13 +305,16 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   }
 
 
-  // Scoreboard
-  var dialog = $('dialog')[0];
+  // Gameover dialog
+  var dialogGameOver = $('#dialog-game-over')[0];
 
-  $('.close-dialog').on('click', function(){
-    location.reload;
+  // Scoreboard dialog
+  var dialogScoreboard = $('#dialog-scoreboard')[0];
+
+  $('.scoreboard-button').on('click', function(){
+    dialogGameOver.close();
+    dialogScoreboard.showModal();
   });
-
 
   function explode() {
     var particles = 25;
@@ -323,6 +343,41 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   // get random number between min and max value
   function rand(min, max) {
     return Math.floor(Math.random() * (max + 1)) + min;
+  }
+
+
+  // Scoreboard
+  db.collection("scoreboard").orderBy("score", "desc").onSnapshot(function(querySnapshot) {
+    var scores = [];
+    var i = 0;
+    querySnapshot.forEach(function(doc) {
+        scores.push(doc.data());
+    });
+    $('#scoreboard').html('');
+    while(i < scores.length){
+      entry = scores[i];
+      i++;
+      $('#scoreboard').append('<div class="score"><span class="score-user">' + i + '. ' + entry.user + '</span><span class="score-score">' + entry.score + '</span></div>')
+    }
+  });
+
+  $('.save-score').on('click', function(){
+    addScore();
+  })
+
+
+  function addScore(){
+    user = $('input[name="user"]').val();
+    score = parseInt($('#dialog-game-over .scoreboard-score').text());
+
+    if(user != '' && score != 0){
+      $('#scoreboard').css('height', '380px');
+      $('.add-score-form').remove();
+      db.collection("scoreboard").add({
+        user: user,
+        score: score
+      });
+    }
   }
 
 })( jQuery );

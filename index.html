@@ -18,18 +18,35 @@
       <div class="game-word-description"><span class="game-instruction"><img width="50" src="./assets/sword.png" /><br />Press any key to start</span></div>
     </div>
 
-    <dialog id="confirm-delete" class="site-dialog">
+    <dialog id="dialog-game-over" class="site-dialog">
       <header class="dialog-header">
         <h1>Game over</h1>
       </header>
       <div class="dialog-content">
         <p>Your score:</p>
         <p class="scoreboard-score"></p>
+        <button class="scoreboard-button btn primary">Save your score</button>
+        <p>Press CTRL + R to start again</p>
+      </div>
+    </dialog>
+
+
+    <dialog id="dialog-scoreboard" class="site-dialog">
+      <header class="dialog-header">
+        <h1>Scoreboard</h1>
+      </header>
+      <div class="dialog-content">
+        <div class="add-score-form">
+          <p>Your score: <span class="scoreboard-score"></span></p> <input type="text" name="user" placeholder="Your name" /><button class="btn primary save-score">Save score</button></p>
+        </div>
+        <div id="scoreboard"></div>
         <p>Press CTRL + R to start again</p>
       </div>
     </dialog>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/4.13.0/firebase-firestore.js"></script>
     <script src="./js/main.js"></script>
   </body>
 </html>
