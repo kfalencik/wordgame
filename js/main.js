@@ -59,8 +59,15 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
   var superPowerFreeze = false;
   var superPowerDouble = false;
 
+  // Game dialogs
+  var dialogStartGame = $('#dialog-start')[0];
+  var dialogGameOver = $('#dialog-game-over')[0];
+  var dialogScoreboard = $('#dialog-scoreboard')[0];
+  dialogPolyfill.registerDialog(dialogStartGame);
+  dialogPolyfill.registerDialog(dialogGameOver);
+  dialogPolyfill.registerDialog(dialogScoreboard);
 
-  $('#dialog-start')[0].showModal();
+  dialogStartGame.showModal();
 
   $('.difficulty-btn').on('click', function(){
     $('#dialog-start')[0].close();
@@ -351,13 +358,6 @@ $.getJSON("./assets/text/dictionary.json", function( data ) {
     superPowerFreeze = false;
     superPowerDouble = false;
   }
-
-
-  // Gameover dialog
-  var dialogGameOver = $('#dialog-game-over')[0];
-
-  // Scoreboard dialog
-  var dialogScoreboard = $('#dialog-scoreboard')[0];
 
   $('.scoreboard-button').on('click', function(){
     dialogGameOver.close();

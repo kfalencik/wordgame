@@ -185,7 +185,7 @@ body{
   background-size: 100%;
   height: 610px;
 }
-.site-dialog::backdrop{
+.site-dialog::backdrop, dialog + .backdrop{
   background: rgba(255,255,255,0.5);
 }
 .site-dialog h1 {
@@ -217,14 +217,12 @@ body{
 .btn{
   padding: 10px 15px;
   cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
   border-radius: 3px;
+  border: none;
   color: #fff;
   margin-bottom: 25px;
   box-shadow: 0 0 10px rgba(255,255,255,0.2);
   font-size: 18px;
-  border-color: #0066c0;
   background-color: #0074d9;
 }
 .btn-orange{
